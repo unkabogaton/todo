@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>To-do List</title>
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/navbar-fixed/">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+
+
+@media (max-width: 750px) {  
+  .card-columns {column-count: 1;}
+}
+
+@media (min-width: 750px) {  
+  .card-columns {column-count: 2;}
+}
+
+/* Medium devices (tablets, 768px and up) The navbar toggle appears at this breakpoint */
+@media (min-width: 768px) {  
+  .card-columns {column-count: 2;}
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+ .card-columns {column-count: 3;}
+}
+ 
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {  
+   .card-columns {column-count: 3;} 
+}
+
+
+    body{
+      background-color: #cccccc;
+    }
+
+    .bg{
+      background-color: #cccccc;
+    }
+
+    .bg-light1{
+      background-color: #d8d8d8;
+    }
+
+    .badge-outline-primary {
+     color: #405189;
+     border: 1px solid #405189
+ }
+
+ .badge.badge-pill {
+     border-radius: 10rem
+ }
+
+ 
+ .badge-outline-secondary {
+     color: #808080;
+     border: 1px solid #808080;
+     
+ }
+
+ .badge-outline-secondary:hover {
+     color:white;
+     background-color: #808080;
+ }
+
+ .badge-outline-success {
+     color: #5cb85c;
+     border: 1px solid #5cb85c;
+  
+ }
+ .badge-outline-success:hover {
+     color:white;
+     background-color: #5cb85c;
+ }
+ .b1{
+  border-top: 4px solid #8db600;
+ }
+
+ .b2{
+  border-top: 4px solid #808080;
+ }
+
+ div.card{
+  transition: all 1s ease 0s;
+ }
+
+ div.card:hover{
+  box-shadow: 5px 8px #888888;
+}
+
+.raise:hover,
+.raise:focus {
+  box-shadow: 0 1em 1em -0.4em gray;
+  transform: translateY(-0.25em);
+  
+}
+
+
+/* ---- grid-item ---- */
+
+.grid-item {
+  width: 350px;
+  float: left;
+}
+
+
+
+    </style>
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark p-3 pl-4">
+      <a class="navbar-brand" href="/">My<strong>Notes</strong></a>
+      <!-- Button trigger modal -->
+      <ul class="navbar-nav ml-auto mr-2">
+        <li>
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#exampleModalCenter">
+            Add Task
+        </button>
+        </li>
+      </ul>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto mr-2 ">
+          <li class="nav-item active">
+            <a class="nav-link" href="/"> Notes <span class="sr-only">(current)</span></a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Show</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown03">
+              <a class="dropdown-item" href="/">All Notes</a>
+              <a class="dropdown-item" href="{%url 'ongoing_task'%}">Ongoing</a>
+              <a class="dropdown-item" href="{%url 'completed_task'%}">Completed</a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Advanced Actions</a>
+            <div class="dropdown-menu" aria-labelledby="dropdown03">
+              <a class="dropdown-item" href="{%url 'all_completed'%}">Mark All as Completed</a>
+              <a class="dropdown-item" href="{%url 'all_ongoing'%}">Mark All as Ongoing</a>
+              <a class="dropdown-item" data-toggle="modal" data-target="#del_completed">Delete all Completed Notes</a>
+              <a class="dropdown-item" data-toggle="modal" data-target="#del_all">Delete all Notes</a>
+            </div>
+          </li>
+        </ul>
+        <form class="form-inline mt-2 mt-md-0" method="GET" action="{% url 'search' %}">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search Task" name="q" value="{{request.GET.q}}">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+    
+    <br>
+
+     <!-- Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Task</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action='/' method='POST'>
+          {%csrf_token%}
+          <div class="modal-body">
+            <label>Task Title</label>
+            <input type="text" class="form-control" name="item">
+            <br>
+
+            <label>Description</label>
+             <textarea class="form-control" rows="3" name="description"></textarea>
+  
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <input type="submit" class="btn btn-primary" value="Add">
+          </div>
+         </form>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class=" album bg pt-5">
+    
+    <div class="container pt-5">
+
+      {%if messages%}
+      {%for message in messages%}
+      <div class="alert alert-warning alert-dismissable" role="alert">{{message}}</div>
+      {%endfor%}
+      {%endif%}
+ 
+
+        {% block content %}
+<!---this is the part of the content-->
+        {% endblock %}
+
+     
+      
+    </div>
+</div>
+
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
