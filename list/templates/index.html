@@ -19,12 +19,10 @@
       <h8 class="card-subtitle mb-2">Added: {{item.created}}</h8>
       <p class="card-text">{{item.description}}</p>
       <div class="d-flex justify-content-end">
-        <a>
           <button type="button" class="btn btn-outline-primary btn-sm mr-2 disabled">
           <i class="fa fa-pencil mr-1"></i>Edit
           </button>
-        </a>
-        <a href="{%url 'delete' item.id%}">
+        <a>
           <button type="button" class="btn btn-outline-danger btn-sm raise" data-toggle="modal" data-target="#del">
           <i class="fa fa-trash"></i> Delete
           </button>
@@ -65,9 +63,9 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Add Task</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <a href="/"><button type="button" class="close" aria-label="Close">
               <span aria-hidden="true">&times;</span>
-            </button>
+            </button></a>
           </div>
           <form action="{%url 'edit' item.id%}" method='POST'>
             {%csrf_token%}
@@ -82,8 +80,8 @@
     
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-              <input type="submit" class="btn btn-primary" name="edit" value="Update">
+              <a href="/"><button type="button" class="btn btn-secondary">Cancel</button></a>
+              <input type="submit" class="btn btn-success" name="edit" value="Update">
             </div>
            </form>
           
@@ -97,15 +95,15 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Delete Note</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <a href="/"><button type="button" class="close" aria-label="Close">
               <span aria-hidden="true">&times;</span>
-            </button>
+            </button></a>
           </div>
           <div class="modal-body">
             Are you sure you want to delete <strong>{{item.item}}</strong>?
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <a href="/"><button type="button" class="btn btn-secondary">Cancel</button></a>
             <a href="{%url 'delete' item.id%}"><button type="button" class="btn btn-outline-danger">Delete</button>
             </a>
           </div>
@@ -119,15 +117,15 @@
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Delete All Completed Notes</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <a href="/"><button type="button" class="close" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
-                </button>
+                </button></a>
               </div>
               <div class="modal-body">
                 Are you sure you want to delete <strong>All Completed Notes</strong>?
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="/"><button type="button" class="btn btn-secondary" >Cancel</button></a>
                 <a href="{%url 'del_completed'%}"><button type="button" class="btn btn-outline-danger">Delete All Completed</button>
                 </a>  
               </div>
@@ -141,15 +139,15 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Delete All Notes</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <a href="/"><button type="button" class="close" aria-label="Close">
               <span aria-hidden="true">&times;</span>
-            </button>
+            </button></a>
           </div>
           <div class="modal-body">
             Are you sure you want to delete <strong>All Notes</strong>?
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <a href="/"><button type="button" class="btn btn-secondary" >Close</button></a>
             <a href="{%url 'del_all'%}"><button type="button" class="btn btn-outline-danger">Delete All</button>
             </a>
             </div>
