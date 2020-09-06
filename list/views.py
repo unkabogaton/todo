@@ -53,11 +53,11 @@ def edit(request, item_id):
 def search(request):
     query=request.GET.get("q")
     try:
-        items=Item.objects.filter(Q(item__icontains=query)|Q(description__icontains=query)|Q(created__icontains=query)).distinct()
+        items=Item.objects.filter(Q(item__icontains=query)|Q(description__icontains=query)).distinct().order_by('-created')
         messages.success(request,('Search Results Are Ready'))
         return render(request,'index.html', context={'items': items})
     except:
-        return render(request,'index.html', context={'items': items})
+        return redirect('index')
 
 def completed_task(request):
     items=Item.objects.filter(completed=True)
