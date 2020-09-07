@@ -22,41 +22,46 @@ def index(request):
 def delete(request, item_id):
     item=get_object_or_404(Item, pk=item_id)
     item.delete()
-    messages.success(request,('A Note Has Been Successfully Deleted!'))
+    a=item.item + " Has Been Sucessfully Deleted"
+    messages.success(request, (a))
     return redirect('index')
 
 def cross_off(request, item_id):
     item=get_object_or_404(Item, pk=item_id)
     item.completed=True
     item.save()
-    messages.success(request,('Congrats! A Task Has Been Completed!'))
+    a= 'Congrats! ' + item.item + " Has Been Completed!"
+    messages.success(request,(a))
     return redirect('index')
 
 def uncross(request, item_id):
     item=get_object_or_404(Item, pk=item_id)
     item.completed=False
     item.save()
-    messages.success(request,('A Task Has Been Set to Ongoing!'))
+    a= item.item + " Has Been Set to Ongoing!"
+    messages.success(request,(a))
     return redirect('index')
 
 def edit(request, item_id):
     if request.method == 'POST':
         item=Item.objects.get(pk=item_id)
-        form=ItemForm(request.POST or None, instance=item)
+        form=ItemForm(request.POST, instance=item)
         if form.is_valid():
-            form.save()
-            messages.success(request,('A Note Has Been Successfully Updated!'))
+            item.save()
+            a = item.item + ' Has Been Successfully Updated!'
+            messages.success(request,(a))
             return redirect('index')
-    else:
-        item=Item.objects.get(pk=item_id)
+        else:
+            return redirect('index')
 
 def search(request):
     query=request.GET.get("q")
-    try:
+    if query:
         items=Item.objects.filter(Q(item__icontains=query)|Q(description__icontains=query)).distinct().order_by('-created')
-        messages.success(request,('Search Results Are Ready'))
+        a= 'Matched Results for ' + query + ' Are Ready'
+        messages.success(request,(a))
         return render(request,'index.html', context={'items': items})
-    except:
+    else:
         return redirect('index')
 
 def completed_task(request):
