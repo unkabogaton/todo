@@ -1,5 +1,8 @@
 from django.db import models
 
+from django.contrib.auth.models import User
+
+user=User
 # Create your models here.
 class Item(models.Model):
     item=models.CharField (max_length=200)

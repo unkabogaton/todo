@@ -6,8 +6,43 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.postgres.search import SearchVector
 from django.db.models import Q
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login as dj_login
+from django import forms
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+
+def register(request):
+    form=CreateUserForm() 
+    if request.method=="POST":
+        form=CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request,('Account has been successfully created'))
+            return redirect('login')
+    return render (request, 'register.html', context={'form':form})
+    
+
+def login(request):
+    if request.method=="POST":
+        username= request.POST.get('username')
+        password= request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            dj_login(request, user)
+            return redirect('/')
+        else:
+            messages.info(request, 'Username or Password did not match')
+    return render (request, 'login.html', context={})
+
+def logout_user(request):
+    logout(request)
+    return redirect('login')
+
+@login_required(login_url='login')
 def index(request):
     if request.method == 'POST':
         form=ItemForm(request.POST)
@@ -19,6 +54,7 @@ def index(request):
     items= Item.objects.all().order_by('-created')
     return render(request,'index.html', context={'items': items})
 
+@login_required(login_url='login')
 def delete(request, item_id):
     item=get_object_or_404(Item, pk=item_id)
     item.delete()
@@ -26,6 +62,7 @@ def delete(request, item_id):
     messages.success(request, (a))
     return redirect('index')
 
+@login_required(login_url='login')
 def cross_off(request, item_id):
     item=get_object_or_404(Item, pk=item_id)
     item.completed=True
@@ -34,6 +71,7 @@ def cross_off(request, item_id):
     messages.success(request,(a))
     return redirect('index')
 
+@login_required(login_url='login')
 def uncross(request, item_id):
     item=get_object_or_404(Item, pk=item_id)
     item.completed=False
@@ -42,10 +80,12 @@ def uncross(request, item_id):
     messages.success(request,(a))
     return redirect('index')
 
+@login_required(login_url='login')
 def edit(request, item_id):
     if request.method == 'POST':
         item=Item.objects.get(pk=item_id)
         form=ItemForm(request.POST, instance=item)
+        user=request.user
         if form.is_valid():
             item.save()
             a = item.item + ' Has Been Successfully Updated!'
@@ -54,6 +94,7 @@ def edit(request, item_id):
         else:
             return redirect('index')
 
+@login_required(login_url='login')
 def search(request):
     query=request.GET.get("q")
     if query:
@@ -64,16 +105,19 @@ def search(request):
     else:
         return redirect('index')
 
+@login_required(login_url='login')
 def completed_task(request):
     items=Item.objects.filter(completed=True)
     messages.success(request,('Showing All Completed Task'))
     return render(request,'index.html', context={'items': items})
 
+@login_required(login_url='login')
 def ongoing_task(request):
     items=Item.objects.filter(completed=False)
     messages.success(request,('Showing All Ongoing Task'))
     return render(request,'index.html', context={'items': items})
 
+@login_required(login_url='login')
 def all_completed(request):
     items=Item.objects.filter(completed=False)
     for item in items:
@@ -82,6 +126,7 @@ def all_completed(request):
     messages.success(request,('All Tasks are set to Completed'))
     return redirect('index')
 
+@login_required(login_url='login')
 def all_ongoing(request):
     items=Item.objects.filter(completed=True)
     for item in items:
@@ -90,6 +135,7 @@ def all_ongoing(request):
     messages.success(request,('All Tasks are set to Ongoing'))
     return redirect('index')
 
+@login_required(login_url='login')
 def del_completed(request):
     items=Item.objects.filter(completed=True)
     for item in items:
@@ -97,6 +143,7 @@ def del_completed(request):
     messages.success(request,('All Completed Tasks are Deleted'))
     return redirect('index')
 
+@login_required(login_url='login')
 def del_all(request):
     items=Item.objects.all()
     for item in items:
